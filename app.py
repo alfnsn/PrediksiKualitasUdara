@@ -25,7 +25,7 @@ app = FastAPI(
 )
 
 
-# -------------------- PREPROCESSING --------------------
+# PREPROCESSING
 def load_image_corrected(image: Image.Image) -> Image.Image:
     return ImageOps.exif_transpose(image).convert("RGB")
 
@@ -80,7 +80,7 @@ to_tensor_normalize = transforms.Compose([
 ])
 
 
-# -------------------- MODEL --------------------
+# MODEL 
 def build_resnet50() -> nn.Module:
     model = models.resnet50(weights=None)
     model.fc = nn.Linear(model.fc.in_features, NUM_CLASSES)
@@ -121,7 +121,7 @@ except Exception as exc:
     MODEL_LOAD_ERROR = str(exc)
 
 
-# -------------------- API ENDPOINTS --------------------
+# API ENDPOINTS
 @app.get("/")
 def home() -> dict[str, str]:
     return {
@@ -196,3 +196,4 @@ async def predict(file: UploadFile = File(...)) -> dict[str, Any]:
         "image_size_after_preprocessing": [IMG_SIZE, IMG_SIZE],
         "device": str(DEVICE),
     }
+#python -m uvicorn app:app --reload
